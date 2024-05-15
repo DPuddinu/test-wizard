@@ -1,9 +1,10 @@
+import { useQuery } from '@tanstack/react-query';
 import { WizardStep } from './components/WizardConfig';
-import Wizard from './components/Wizard';
+import WizardContent from './components/WizardContent';
 import WizardStep1 from './components/WizardStep1';
 import WizardStep2 from './components/WizardStep2';
+import { Wizard } from './components/providers/WizardProvider';
 import { ThemeProvider } from './components/providers/theme-provider';
-import { useQuery } from '@tanstack/react-query';
 
 function getAge(): Promise<number> {
   return new Promise((resolve) => {
@@ -14,12 +15,13 @@ function getAge(): Promise<number> {
 }
 
 function App() {
-  
+  // simulo una chiamata per settare dopo i valori nel form
   const { data } = useQuery({
     queryFn: getAge,
     queryKey: ['age']
   });
-  
+
+  // questi possono anche andare in un file a parte se vogliamo
   const wizardSteps: WizardStep[] = [
     {
       key: 'step-1',
@@ -33,10 +35,24 @@ function App() {
     }
   ];
 
+  function onSubmit() {
+    // questa può essere per esempio la chiusura di una modale o una chiamata POST o altro
+    console.log('submit');
+  }
+  function onCancel() {
+    // chiudi dialog o annulla draft o altro
+    console.log('cancel');
+  }
+
   return (
     <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
       <main className='h-screen '>
-        <Wizard steps={wizardSteps} />
+        <Wizard onSubmit={onSubmit} onCancel={onCancel} steps={wizardSteps}>
+          <WizardContent />
+        </Wizard>
+        <Wizard onSubmit={onSubmit} onCancel={onCancel} steps={wizardSteps}>
+          <WizardContent />
+        </Wizard>
       </main>
     </ThemeProvider>
   );

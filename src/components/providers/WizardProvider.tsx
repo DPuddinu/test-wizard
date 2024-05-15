@@ -13,13 +13,13 @@ type WizardState = {
 
 export const WizardContext = createContext<WizardState | null>(null);
 
-export type WizardContextProviderProps = PropsWithChildren & WizardState;
-export const WizardContextProvider = ({
+export type WizardProps = PropsWithChildren & WizardState;
+export const Wizard = ({
+  steps,
   children,
   onSubmit,
-  onCancel,
-  steps
-}: Omit<WizardContextProviderProps, 'currentStep' | 'previousStep' | 'nextStep' | 'currentStepKey'>) => {
+  onCancel
+}: Omit<WizardProps, 'currentStep' | 'previousStep' | 'nextStep' | 'currentStepKey'>) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   function nextStep() {
@@ -32,9 +32,9 @@ export const WizardContextProvider = ({
   return (
     <WizardContext.Provider
       value={{
+        steps,
         currentStep: currentStep,
         currentStepKey: steps[currentStep].key,
-        steps,
         onSubmit,
         onCancel,
         nextStep,

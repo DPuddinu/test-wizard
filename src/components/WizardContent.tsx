@@ -16,10 +16,7 @@ const WizardContent = () => {
         </ul>
       </header>
       <section>{steps[currentStep].component}</section>
-      <footer className=''>
-        <Button type='submit' form={steps[currentStep].key}>
-          {currentStep === steps.length - 1 ? 'Finish' : 'Next'}
-        </Button>
+      <footer>
       </footer>
     </div>
   );
